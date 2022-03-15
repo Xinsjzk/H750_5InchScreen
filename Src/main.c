@@ -66,7 +66,7 @@ static void MX_LTDC_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+volatile HAL_LTDC_StateTypeDef LtdcState;
 /* USER CODE END 0 */
 
 /**
@@ -76,7 +76,6 @@ static void MX_LTDC_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -103,7 +102,8 @@ int main(void)
   MX_LTDC_Init();
   /* USER CODE BEGIN 2 */
   SDRAM_Init();
-//	memset((uint8_t *)0xc0000000, 0xff, 1843200);
+	memset((uint8_t *)0xc0000000, 0xff, 1843200);
+	LtdcState = HAL_LTDC_GetState(&hltdc);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -125,7 +125,6 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-  RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
 
   /** Supply configuration update enable
   */
@@ -174,22 +173,6 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_LTDC|RCC_PERIPHCLK_I2C2
-                              |RCC_PERIPHCLK_FMC;
-  PeriphClkInitStruct.PLL3.PLL3M = 3;
-  PeriphClkInitStruct.PLL3.PLL3N = 51;
-  PeriphClkInitStruct.PLL3.PLL3P = 2;
-  PeriphClkInitStruct.PLL3.PLL3Q = 2;
-  PeriphClkInitStruct.PLL3.PLL3R = 25;
-  PeriphClkInitStruct.PLL3.PLL3RGE = RCC_PLL3VCIRANGE_3;
-  PeriphClkInitStruct.PLL3.PLL3VCOSEL = RCC_PLL3VCOWIDE;
-  PeriphClkInitStruct.PLL3.PLL3FRACN = 0;
-  PeriphClkInitStruct.FmcClockSelection = RCC_FMCCLKSOURCE_D1HCLK;
-  PeriphClkInitStruct.I2c123ClockSelection = RCC_I2C123CLKSOURCE_D2PCLK1;
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
 }
 
 /**
@@ -211,8 +194,6 @@ static void MX_DMA2D_Init(void)
   hdma2d.Init.Mode = DMA2D_M2M;
   hdma2d.Init.ColorMode = DMA2D_OUTPUT_RGB888;
   hdma2d.Init.OutputOffset = 0;
-  hdma2d.Init.BytesSwap = DMA2D_BYTES_REGULAR;
-  hdma2d.Init.LineOffsetMode = DMA2D_LOM_PIXELS;
   hdma2d.LayerCfg[1].InputOffset = 0;
   hdma2d.LayerCfg[1].InputColorMode = DMA2D_INPUT_RGB888;
   hdma2d.LayerCfg[1].AlphaMode = DMA2D_NO_MODIF_ALPHA;
@@ -326,7 +307,7 @@ static void MX_LTDC_Init(void)
   pLayerCfg.Alpha0 = 0;
   pLayerCfg.BlendingFactor1 = LTDC_BLENDING_FACTOR1_CA;
   pLayerCfg.BlendingFactor2 = LTDC_BLENDING_FACTOR2_CA;
-  pLayerCfg.FBStartAdress = 0xc00000;
+  pLayerCfg.FBStartAdress = 0xc0000000;
   pLayerCfg.ImageWidth = 800;
   pLayerCfg.ImageHeight = 480;
   pLayerCfg.Backcolor.Blue = 0;
