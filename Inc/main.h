@@ -33,6 +33,7 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <string.h>
+#include "gt911.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -60,6 +61,8 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define LCD_BL_Pin GPIO_PIN_11
 #define LCD_BL_GPIO_Port GPIOD
+#define TP_RST_Pin GPIO_PIN_1
+#define TP_RST_GPIO_Port GPIOB
 #define TOUCH_INT_Pin GPIO_PIN_0
 #define TOUCH_INT_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */

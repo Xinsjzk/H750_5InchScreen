@@ -102,8 +102,8 @@ int main(void)
   MX_LTDC_Init();
   /* USER CODE BEGIN 2 */
   SDRAM_Init();
-	memset((uint8_t *)0xc0000000, 0xff, 1843200);
-	LtdcState = HAL_LTDC_GetState(&hltdc);
+  memset((uint8_t *)0xc0000000, 0xff, 1843200);
+  gt911_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -397,12 +397,22 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LCD_BL_GPIO_Port, LCD_BL_Pin, GPIO_PIN_SET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(TP_RST_GPIO_Port, TP_RST_Pin, GPIO_PIN_SET);
+
   /*Configure GPIO pin : LCD_BL_Pin */
   GPIO_InitStruct.Pin = LCD_BL_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LCD_BL_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : TP_RST_Pin */
+  GPIO_InitStruct.Pin = TP_RST_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(TP_RST_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : TOUCH_INT_Pin */
   GPIO_InitStruct.Pin = TOUCH_INT_Pin;
