@@ -23,6 +23,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "bsp_sdram.h"
+#include "lvgl.h"
+#include "lv_port_disp.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -67,6 +69,8 @@ static void MX_LTDC_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 volatile HAL_LTDC_StateTypeDef LtdcState;
+lv_obj_t *src;
+lv_style_t objStyle;
 /* USER CODE END 0 */
 
 /**
@@ -104,12 +108,20 @@ int main(void)
   SDRAM_Init();
   memset((uint8_t *)0xc0000000, 0xff, 1843200);
   gt911_init();
+  lv_init();
+  lv_port_disp_init();
+  src = lv_obj_create(lv_scr_act());
+  lv_obj_set_size(src, 800, 480);
+  lv_style_init(&objStyle);
+  lv_style_set_bg_color(&objStyle, lv_color_hex(0xffffff));
+  lv_obj_add_style(src, &objStyle, 0);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  lv_timer_handler();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
