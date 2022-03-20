@@ -25,6 +25,7 @@
 #include "bsp_sdram.h"
 #include "lvgl.h"
 #include "lv_port_disp.h"
+#include "lv_port_indev.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -71,6 +72,17 @@ static void MX_LTDC_Init(void);
 volatile HAL_LTDC_StateTypeDef LtdcState;
 lv_obj_t *src;
 lv_style_t objStyle;
+
+void lv_example_arc_1(void)
+{
+    /*Create an Arc*/
+    lv_obj_t * arc = lv_arc_create(lv_scr_act());
+    lv_obj_set_size(arc, 150, 150);
+    lv_arc_set_rotation(arc, 135);
+    lv_arc_set_bg_angles(arc, 0, 270);
+    lv_arc_set_value(arc, 40);
+    lv_obj_center(arc);
+}
 /* USER CODE END 0 */
 
 /**
@@ -80,6 +92,8 @@ lv_style_t objStyle;
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+	uint32_t uiTick100ms;
+	TS_StateTypeDef tpState;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -106,15 +120,18 @@ int main(void)
   MX_LTDC_Init();
   /* USER CODE BEGIN 2 */
   SDRAM_Init();
-  memset((uint8_t *)0xc0000000, 0xff, 1843200);
-  gt911_init();
+  memset((uint8_t *)0xc0000000, 0xFF, 1843200);
+//  gt911_init();
   lv_init();
   lv_port_disp_init();
-  src = lv_obj_create(lv_scr_act());
-  lv_obj_set_size(src, 800, 480);
-  lv_style_init(&objStyle);
-  lv_style_set_bg_color(&objStyle, lv_color_hex(0xffffff));
-  lv_obj_add_style(src, &objStyle, 0);
+  lv_port_indev_init();
+//  src = lv_obj_create(lv_scr_act());
+//  lv_obj_set_size(src, 800, 480);
+//  lv_style_init(&objStyle);
+//  lv_style_set_bg_color(&objStyle, lv_color_hex(0xff0000));
+//  lv_obj_add_style(src, &objStyle, 0);
+  lv_example_arc_1();
+  uiTick100ms = uwTick;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -122,6 +139,11 @@ int main(void)
   while (1)
   {
 	  lv_timer_handler();
+//	  if((uint32_t)(uwTick - uiTick100ms) >= 100)
+//	  {
+//		  uiTick100ms = uwTick;
+//		  gt911_get_state(&tpState);
+//	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -426,11 +448,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(TP_RST_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : TOUCH_INT_Pin */
-  GPIO_InitStruct.Pin = TOUCH_INT_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(TOUCH_INT_GPIO_Port, &GPIO_InitStruct);
+  /*Configure GPIO pin : TP_INT_Pin */
+  GPIO_InitStruct.Pin = TP_INT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(TP_INT_GPIO_Port, &GPIO_InitStruct);
 
 }
 

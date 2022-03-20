@@ -63,8 +63,8 @@ void Error_Handler(void);
 #define LCD_BL_GPIO_Port GPIOD
 #define TP_RST_Pin GPIO_PIN_1
 #define TP_RST_GPIO_Port GPIOB
-#define TOUCH_INT_Pin GPIO_PIN_0
-#define TOUCH_INT_GPIO_Port GPIOB
+#define TP_INT_Pin GPIO_PIN_0
+#define TP_INT_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
