@@ -1327,6 +1327,11 @@
               <FileType>1</FileType>
               <FilePath>..\Gui\lv_port_indev.c</FilePath>
             </File>
+            <File>
+              <FileName>lv_gpu_stm32_dma2d.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Gui\Lvgl\src\draw\stm32_dma2d\lv_gpu_stm32_dma2d.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
